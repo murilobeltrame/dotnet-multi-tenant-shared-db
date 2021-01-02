@@ -22,6 +22,12 @@ namespace MultiTenantData.API.Models
             return coursesFaker.Generate(qtd);
         }
 
+        private static IEnumerable<School> GetSchools(int qtd) {
+            var schoolsFaker = new Faker<School>()
+                .RuleFor(o => o.Name, f => $"{f.Name.FullName()} School");
+            return schoolsFaker.Generate(qtd);
+        }
+
         private static int GetRandom(int min, int max) {
             var r = new Random();
             return r.Next(min, max);
@@ -31,29 +37,41 @@ namespace MultiTenantData.API.Models
         {
             context.Database.EnsureCreated();
 
-            var coursesQtd = 10;
-            var courses = GetCourses(coursesQtd);
-            context.Courses.AddRange(courses);
+            var schoolsQtd = 5;
+            var schools = GetSchools(schoolsQtd);
+            context.School.AddRange(schools);
 
-            var students = GetStudents(50);
+            var fullCourseList = new List<Course>();
+            foreach (var school in schools)
+            {
+                var coursesQtd = GetRandom(1, 5);
+                var courses = GetCourses(coursesQtd);
+                school.Courses = new List<Course>(courses);
+                fullCourseList.AddRange(courses);
+            }
+
+            var students = GetStudents(500);
             context.Students.AddRange(students);
 
             context.SaveChanges();
 
             foreach (var student in students)
             {
-                var courseIdx = GetRandom(0, coursesQtd - 1);
-                var gradeIdx = GetRandom(0, 4);
-
-                var grade = ((Grade)gradeIdx);
-
-
-                context.Enrollments.Add(new Enrollment
+                var coursesQtd = GetRandom(1, 5);
+                for (int i = 0; i < coursesQtd; i++)
                 {
-                    Student = student,
-                    Course = courses.ElementAt(courseIdx),
-                    Grade = grade
-                });
+                    var courseIdx = GetRandom(0, fullCourseList.Count - 1);
+                    var gradeIdx = GetRandom(0, 4);
+
+                    var grade = ((Grade)gradeIdx);
+
+                    context.Enrollments.Add(new Enrollment
+                    {
+                        Student = student,
+                        Course = fullCourseList[courseIdx],
+                        Grade = grade
+                    });
+                }
             }
 
             context.SaveChanges();

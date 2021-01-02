@@ -6,6 +6,7 @@ namespace MultiTenantData.API.Models
     {
         public DbSet<Course> Courses { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
+        public DbSet<School> School { get; set; }
         public DbSet<Student> Students { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
@@ -16,6 +17,7 @@ namespace MultiTenantData.API.Models
         {
             modelBuilder.Entity<Course>().ToTable("Course");
             modelBuilder.Entity<Enrollment>().ToTable("Enrollment");
+            modelBuilder.Entity<School>().ToTable("School");
             modelBuilder.Entity<Student>().ToTable("Student");
         }
     }
