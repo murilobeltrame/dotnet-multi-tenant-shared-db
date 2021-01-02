@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Bogus;
 
 namespace MultiTenantData.API.Models
@@ -39,7 +38,7 @@ namespace MultiTenantData.API.Models
 
             var schoolsQtd = 5;
             var schools = GetSchools(schoolsQtd);
-            context.School.AddRange(schools);
+            context.Schools.AddRange(schools);
 
             var fullCourseList = new List<Course>();
             foreach (var school in schools)
