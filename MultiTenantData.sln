@@ -5,6 +5,19 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiTenantData.API", "MultiTenantData.API\MultiTenantData.API.csproj", "{9B06F3EF-D7D5-4713-B130-EA0C0028D90F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Environment", "Environment", "{3DE623A9-1A7A-4A34-851D-EC4E95146DE7}"
+	ProjectSection(SolutionItems) = preProject
+		.environment\rundependencies.cmd = .environment\rundependencies.cmd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "msssql", "msssql", "{9210D27C-3628-48D2-A5D9-5855F7E49D5B}"
+	ProjectSection(SolutionItems) = preProject
+		.environment\mssql\create-db.sh = .environment\mssql\create-db.sh
+		.environment\mssql\Dockerfile = .environment\mssql\Dockerfile
+		.environment\mssql\entrypoint.sh = .environment\mssql\entrypoint.sh
+		.environment\mssql\setup.sql = .environment\mssql\setup.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +43,8 @@ Global
 		{9B06F3EF-D7D5-4713-B130-EA0C0028D90F}.Release|x64.Build.0 = Release|Any CPU
 		{9B06F3EF-D7D5-4713-B130-EA0C0028D90F}.Release|x86.ActiveCfg = Release|Any CPU
 		{9B06F3EF-D7D5-4713-B130-EA0C0028D90F}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9210D27C-3628-48D2-A5D9-5855F7E49D5B} = {3DE623A9-1A7A-4A34-851D-EC4E95146DE7}
 	EndGlobalSection
 EndGlobal
