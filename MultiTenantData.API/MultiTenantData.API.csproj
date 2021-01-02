@@ -15,4 +15,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Util\" />
+    <Folder Include="Util\Security\" />
+    <Folder Include="Util\Security\Interfaces\" />
+  </ItemGroup>
 </Project>
