@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -7,6 +8,7 @@ using MultiTenantData.API.Models;
 
 namespace MultiTenantData.API.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class CoursesController : ControllerBase
@@ -23,7 +25,7 @@ namespace MultiTenantData.API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Course>>> List()
         {
-            return Ok(await _context.Courses.IgnoreQueryFilters().ToListAsync());
+            return Ok(await _context.Courses.ToListAsync());
         }
     }
 }
