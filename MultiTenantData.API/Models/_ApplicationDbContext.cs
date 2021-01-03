@@ -9,6 +9,7 @@ namespace MultiTenantData.API.Models
     public class ApplicationDbContext: DbContext
     {
         private readonly IClaimsProvider _claimsProvider;
+
         private int _userId => _claimsProvider.UserId;
         private IEnumerable<Guid> _acessibleSchoolIds => _claimsProvider.AcessibleSchoolIds; 
 
@@ -16,10 +17,21 @@ namespace MultiTenantData.API.Models
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<School> Schools { get; set; }
         public DbSet<Student> Students { get; set; }
+        public DbSet<User> Users { get; set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IClaimsProvider claimsProvider) : base(options)
+        public ApplicationDbContext(
+            DbContextOptions<ApplicationDbContext> options,
+            IClaimsProvider claimsProvider
+            ) : base(options)
         {
             _claimsProvider = claimsProvider;
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder = optionsBuilder
+                .LogTo(Console.WriteLine);
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -46,6 +58,12 @@ namespace MultiTenantData.API.Models
             {
                 entity.HasQueryFilter(x => x.Enrollments.Any(xx => _acessibleSchoolIds.Contains(xx.Course.School.Id)));
                 entity.ToTable("Student");
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasQueryFilter(x => x.ManagedSchools.Any(xx => _acessibleSchoolIds.Contains(xx.Id)));
+                entity.ToTable("User");
             });
         }
     }

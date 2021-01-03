@@ -9,9 +9,21 @@ namespace MultiTenantData.API.Util.Security
     {
         private readonly IHttpContextAccessor _accessor;
 
-        public int UserId => int.TryParse(_accessor.HttpContext?.User?.Claims?.SingleOrDefault(x => x.Type == "UserId")?.Value, out var userid) ? userid : 0;
+        public int UserId => int.TryParse(
+            _accessor
+            .HttpContext?
+            .User?.
+            Claims?.
+            SingleOrDefault(x => x.Type == "UserId")?
+            .Value, out var userid) ? userid : 0;
 
-        public IEnumerable<Guid> AcessibleSchoolIds => _accessor.HttpContext?.User?.Claims?.Where(x => x.Type == "AccessibleSchoolIds").Select(x => Guid.Parse(x.Value)).ToList() ?? new List<Guid>();
+        public IEnumerable<Guid> AcessibleSchoolIds => _accessor
+            .HttpContext?
+            .User?
+            .Claims?
+            .Where(x => x.Type == "AccessibleSchoolId")
+            .Select(x => Guid.Parse(x.Value))
+            .ToList() ?? new List<Guid>();
 
         public ClaimsProvider(IHttpContextAccessor accessor)
         {
